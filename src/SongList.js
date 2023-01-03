@@ -1,12 +1,36 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Song } from "./Song";
+import { MixtapeContext } from "./MixtapeContext";
+
+const ascending = (a, b) => a.year - b.year;
+const descending = (a, b) => b.year - a.year;
 
 export const SongList = () => {
   // Your code here! ✨
+  const { genre, sortOrder, songs } = useContext(MixtapeContext);
+
+  const [filteredSongs, setFilteredSongs] = useState(songs);
+
+  useEffect(() => {
+    const newArr = [...songs];
+    if (genre === "all") {
+      setFilteredSongs(
+        newArr.sort(sortOrder === "ascending" ? ascending : descending)
+      );
+    } else {
+      setFilteredSongs(
+        newArr
+          .filter((song) => song.genre === genre)
+          .sort(sortOrder === "ascending" ? ascending : descending)
+      );
+    }
+  }, [genre, sortOrder]);
+
   return (
     <>
-      <h2>TODO: Update taste in music...?</h2>
-      <Song artist="Nickelback" genre="rock" name="Photograph" year={2005} />
+      {filteredSongs.map((song) => (
+        <Song {...song} key={song.name} />
+      ))}
     </>
   );
 };
