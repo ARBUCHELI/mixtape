@@ -24,7 +24,7 @@ export const SongList = () => {
           .sort(sortOrder === "ascending" ? ascending : descending)
       );
     }
-  }, [genre, sortOrder]);
+  }, [genre, sortOrder, songs]);
 
   return (
     <>
